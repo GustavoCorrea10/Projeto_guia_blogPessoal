@@ -1,6 +1,9 @@
 package com.generation.blogpessoal.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.generation.blogpessoal.model.Postagem;
 
@@ -28,4 +31,24 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> {
 	//POSTAGEM: É a CLASSE QUE REPRESENTA a TABELA no BANCO DE DADOS. OU SEJA, as OPERAÇÕES VÃO FUNCIONAR NA TABELA tb_postagem.
 	//
 	//Long: É o TIPO do ID DA TEBELA. AQUI, o id DA POSTAGEM é do TIPO Long.
+	
+	
+	
+	
+	
+	
+	
+	//Query Methods
+	 List <Postagem> findAllByTituloContainingIgnoreCase(@Param("titulo")String titulo);
 }
+
+
+
+
+
+
+
+
+
+
+
