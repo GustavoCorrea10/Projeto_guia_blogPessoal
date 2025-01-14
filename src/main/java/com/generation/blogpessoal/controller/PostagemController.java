@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.blogpessoal.model.Postagem;
 import com.generation.blogpessoal.repository.PostagemRepository;
+import com.generation.blogpessoal.repository.TemaRepository;
 
 import jakarta.validation.Valid;
 
@@ -43,6 +44,9 @@ public class PostagemController {
 
 	@Autowired // O SPRING DÁ AUTONOMIA PARA A INTERFACE PODER INVOCAR OS METODOS
 	private PostagemRepository postagemRepository;
+	
+	@Autowired
+	private TemaRepository temaRepository;
 	
 	
 	
@@ -242,54 +246,42 @@ public class PostagemController {
 	
 	@PostMapping
 	public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem postagem){
-		return ResponseEntity.status(HttpStatus.CREATED) // 201 - Criado
-				.body(postagemRepository.save(postagem));
+		//<Postagem> CORPO DA RESPOSTA, NESSE CASO O CORPO SERA UM OBJETO DO TIPO POSTAGEM
+		
+		if (temaRepository.existsById(postagem.getTema().getId()))
+		//existsById() RETORNA TRUE SE O TEMA COM O ID EXISTIR OU FALSE SE NÃO EXISTIR
+		  //POSTAGEM: REPRESENTA O OBJETO POSTAGEM, QUE CONTÉM OS DADOS DA PUBLICAÇÃO
+			  //postagem.getTema(): RETORNA O TEMA ASSOCIADO AO OBJETO
+			       //.getId(): RETORNA O ID DO OBJETO
+			  
+		return ResponseEntity.status(HttpStatus.CREATED).body(postagemRepository.save(postagem));
+		//.body ENVIA DE VOLTA NA TELA O OBJETO CRIADO
+		
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tema não existe!", null);//
+		//throw new É USADO PARA LANÇAR UMA EXCEÇÃO
+		// O NULL É USADO PARA INDICAR QUE NÃO HÁ CAUSA ADICIONAL OU DETALHES EXTRAS A SEREM ENVIADOS COM A EXCEÇÃO.
+
+		
 	}
 	
 
-	//RESPONSEENTITY<POSTAGEM> :
-	
-	//SIGNIFICA QUE A RESPOSTA SERÁ DO TIPO POSTAGEM, OU SEJA, ELA INCLUIRÁ UMA POSTAGEM COMO RESPOSTA NO CORPO.
-
-	
-	//--------------------------------------------------------------------------------------------------------------------------------------------
-	
-	
-	//@VALID: 
-	
-	//ESSA ANOTAÇÃO DIZ AO SPRING PARA REALIZAR A VALIDAÇÃO DO OBJETO POSTAGEM. OU SEJA, ANTES DE SALVAR A POSTAGEM, 
-	//O SPRING IRÁ VERIFICAR SE O OBJETO ATENDE ÀS RESTRIÇÕES DEFINIDAS, COMO OS LIMITES DE TAMANHO OU FORMATO DE DADOS 
-	//(POR EXEMPLO, SE O TÍTULO DA POSTAGEM NÃO ESTÁ VAZIO).
-	
-	
-	//--------------------------------------------------------------------------------------------------------------------------------------------------
-
-	//@REQUESTBODY POSTAGEM POSTAGEM:
-	
-	//A ANOTAÇÃO @REQUESTBODY INDICA QUE O CORPO DA REQUISIÇÃO (O QUE É ENVIADO NO CORPO DA REQUISIÇÃO POST)
-	//DEVE SER CONVERTIDO AUTOMATICAMENTE PARA O TIPO POSTAGEM.
-	
-	//POSTAGEM POSTAGEM: 
-	
-	//ESSE É O OBJETO QUE SERÁ CRIADO A PARTIR DOS DADOS ENVIADOS NA REQUISIÇÃO. ENTÃO, QUANDO O CLIENTE ENVIA OS DADOS (GERALMENTE EM FORMATO JSON),
-	//O SPRING OS CONVERTE EM UM OBJETO POSTAGEM.
-	
-	
-	
-	
-
-
-	
-	
 	//=====================================================================================================================================================================================================
 	
 	
 	@PutMapping
 	public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem postagem){
-		return postagemRepository.findById(postagem.getId())
-				.map(resposta -> ResponseEntity.status(HttpStatus.OK)
-				.body(postagemRepository.save(postagem)))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+		if (postagemRepository.existsById(postagem.getId())) {
+			
+		
+			if(temaRepository.existsById(postagem.getTema().getId()))
+	             return ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem));
+			
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tema não existe", null);
+		
+			}
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		
 	}
 	
 	
@@ -303,16 +295,19 @@ public class PostagemController {
 	//=========================================================================================================
 	
 	
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("{id}")
-	public void delete(@PathVariable long id) {
-		Optional<Postagem> postagem = postagemRepository.findById(id);
+	@ResponseStatus(HttpStatus.NO_CONTENT) //  RETORNA o status HTTP 204
+	@DeleteMapping("{id}") // DEFINE QUE ESSE METODO VAI SER CHAMADO PELA REQUISIÇÃO HTTP DELETE E QUE INCLUI O ID 
+	public void delete(@PathVariable long id) {  //DELCARA O METODO DELETE QUE RETORNA VOID E RECEBE UMM PARAMETRO ID, QUE VAI SER PEGO PELO @PathVariable
+		Optional<Postagem> postagem = postagemRepository.findById(id); // USA O REPOSITORIO postagemRepository PARA BUSCAR NO BANCO DE DADOS UMA POSTAGEM COM O ID FORNECIDO.
+		//O RESULTADO É UM OPTIONAL, QUE PODE ENCONTRAR O OBJETO OU NÃO CASO O ID NÃO EXISTA
 		
-		if(postagem.isEmpty())
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		if(postagem.isEmpty())  //VERIFICA SE O OPTIONAL ESTÁ VAZIO (OU SEJA, NÃO ENCONTROU A POSTAGEM COM O ID). 
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND); //SE ESTIVER, LANÇA UMA EXCEÇÃO QUE RETORNA O STATUS HTTP 404 (NOT FOUND) PARA O CLIENTE.
+
 		
 		postagemRepository.deleteById(id);
-	}
+	}  //CASO A POSTAGEM SEJA ENCONTRADA, ELA É EXCLUÍDA DO BANCO DE DADOS PELO MÉTODO DELETEBYID DO REPOSITÓRIO.
+
 	
 	
 	

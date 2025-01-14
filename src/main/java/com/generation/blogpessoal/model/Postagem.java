@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -31,6 +34,10 @@ public class Postagem {
 	@UpdateTimestamp  //FAZ COM QUE O CAMPO data RECEBA AUTOMATICAMENTE a data e HORA do MOMENTO EM QUE o REGISTRO FOI CRIADO OU ATUALIZADO.
 	private LocalDateTime data; // data (10/10/25 e a HORA)
 	
+	
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private Tema tema;
 	
 	
 	
@@ -60,6 +67,16 @@ public class Postagem {
 	public void setData(LocalDateTime data) {
 		this.data = data;
 	}
+	
+	
+	public Tema getTema() {
+		return tema;
+	}
+	public void setTema(Tema tema) {
+		this.tema = tema;
+	}
+	
+	
 	
 	
 }
