@@ -271,16 +271,32 @@ public class PostagemController {
 	@PutMapping
 	public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem postagem){
 		if (postagemRepository.existsById(postagem.getId())) {
-			
+			//O método recebe uma postagem que vai ser atualizada.
+			//@Valid: Significa que os dados da postagem serão verificados antes de serem usados.
+			//@RequestBody: O corpo da requisição (os dados da postagem) será convertido para um objeto Postagem.
 		
+			
+			
+			
+			
+			
+			
 			if(temaRepository.existsById(postagem.getTema().getId()))
+				//O código verifica se a postagem com o ID fornecido já existe no banco de dados.
+				//Se a postagem existir, ele verifica se o tema da postagem também existe no banco de dados.
+				
+				
 	             return ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem));
+			//Se tanto a postagem quanto o tema existirem, o código atualiza a postagem e retorna uma resposta de sucesso (200 OK).
+			
+			
 			
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tema não existe", null);
-		
+		//Se o tema não existir, o código gera um erro (400 BAD REQUEST) com a mensagem "Tema não existe".
 			}
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		//Se a postagem não existir, o código retorna um erro (404 NOT FOUND), dizendo que a postagem não foi encontrada.
 		
 	}
 	
@@ -301,8 +317,19 @@ public class PostagemController {
 		Optional<Postagem> postagem = postagemRepository.findById(id); // USA O REPOSITORIO postagemRepository PARA BUSCAR NO BANCO DE DADOS UMA POSTAGEM COM O ID FORNECIDO.
 		//O RESULTADO É UM OPTIONAL, QUE PODE ENCONTRAR O OBJETO OU NÃO CASO O ID NÃO EXISTA
 		
+		//FUNÇÃO DA VARIÁVEL POSTAGEM (EM LETRAS MINÚSCULAS E NA COR AMARELA):
+		//ELA ARMAZENA O RESULTADO DA BUSCA POR UMA POSTAGEM NO BANCO DE DADOS. 
+		//SE O RESULTADO FOR VAZIO, O CÓDIGO TRATA ISSO VERIFICANDO COM ISEMPTY E LANÇA UM ERRO CASO A POSTAGEM NÃO EXISTA.
+
+		
+		
+		
+		
+		
+		
+		
 		if(postagem.isEmpty())  //VERIFICA SE O OPTIONAL ESTÁ VAZIO (OU SEJA, NÃO ENCONTROU A POSTAGEM COM O ID). 
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND); //SE ESTIVER, LANÇA UMA EXCEÇÃO QUE RETORNA O STATUS HTTP 404 (NOT FOUND) PARA O CLIENTE.
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND); //SE ESTIVER VAZIO, LANÇA UMA EXCEÇÃO QUE RETORNA O STATUS HTTP 404 (NOT FOUND) PARA O CLIENTE.
 
 		
 		postagemRepository.deleteById(id);

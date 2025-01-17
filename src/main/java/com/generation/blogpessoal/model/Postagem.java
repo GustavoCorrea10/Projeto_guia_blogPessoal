@@ -22,7 +22,7 @@ public class Postagem {
 	@Id  // ELE É A CHAVE PRIMARIA (PRIMARY KEY)
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // INDICA O AUTO INCREMENTO
  	private Long id;
-	
+		
 	@NotBlank(message = "Esse campo é obrigatório!") // NAO PERMITE QUE ESPAÇOS EM BRANCOS SEJAM ADICIONADOS
 	@Size(min = 5, max = 100, message = "Digite no minimo 5 e no maximo 100 caracteres") // A QUANTIDADE DE CARACTERES PERMITIDOS COM UMA MENSAGEM CASO O USUARIO NÃO USE A REGRA
 	private String titulo;
@@ -35,10 +35,18 @@ public class Postagem {
 	private LocalDateTime data; // data (10/10/25 e a HORA)
 	
 	
+	
+	
 	@ManyToOne
 	@JsonIgnoreProperties("postagem")
 	private Tema tema;
+	// INDICA QUE QUE NA TABELA POSTAGEM TERA UM CAMPO CHAMADO TEMA QUE É UMA REFERENCIA AO OBJETO TEMA
 	
+	
+	
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private Usuario usuario;
 	
 	
 	
@@ -68,13 +76,26 @@ public class Postagem {
 		this.data = data;
 	}
 	
-	
 	public Tema getTema() {
 		return tema;
 	}
 	public void setTema(Tema tema) {
 		this.tema = tema;
 	}
+	
+	
+	
+	
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
+	
+	
 	
 	
 	

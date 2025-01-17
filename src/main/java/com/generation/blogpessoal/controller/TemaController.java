@@ -24,7 +24,7 @@ import com.generation.blogpessoal.repository.TemaRepository;
 import jakarta.validation.Valid;
 
 @RestController // DEFINE AO SPRING QUE ESSA CLASSE É UMA CONTROLLER E VAI RESPONDERAS REQUISIÇÕES FEITAS A API
-@RequestMapping("/temas") // DIZ QUE TODOS OS METODO DENTRO DA TemaController SERÃO ACESSADOS PELA URL /TEMAS
+@RequestMapping("/tema") // DIZ QUE TODOS OS METODO DENTRO DA TemaController SERÃO ACESSADOS PELA URL /TEMAS
 @CrossOrigin(origins = "*", allowedHeaders = "*") // PERMITE QUE a API SEJA ACESSADA DE QUALQUER LUGAR (QUALQUER DOMINIO OU APLICATIVO web)
 public class TemaController {
     

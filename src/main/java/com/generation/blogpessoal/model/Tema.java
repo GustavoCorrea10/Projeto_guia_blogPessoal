@@ -31,9 +31,13 @@ public class Tema {
 	
 	
 	//@OneToMany: Diz que um tema pode ter várias postagens( 1 para muitos)
+	
 	//fetch = FetchType.LAZY: As postagens só são carregadas do banco quando você precisar delas. ( NÃO VEM TUDO DE UMA VEZ )
-	// mappedBy = "tema": 
+	
+	// mappedBy = "tema":
+	
 	//cascade = CascadeType.REMOVE: Se o tema for apagado, as postagens relacionadas e ele também serão apagadas.
+	
 	//@JsonIgnoreProperties("tema"): Evita que o campo tema apareça repetido nas postagens quando transformado em JSON.
 	
 	

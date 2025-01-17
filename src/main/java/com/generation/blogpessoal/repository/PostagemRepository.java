@@ -39,8 +39,10 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> {
 	
 	
 	//Query Methods
-	 List <Postagem> findAllByTituloContainingIgnoreCase(@Param("titulo")String titulo);
+	 List <Postagem> findAllByTituloContainingIgnoreCase(@Param("titulo")String titulo); 
+
 }
+
 
 
 
