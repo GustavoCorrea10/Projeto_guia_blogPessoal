@@ -8,7 +8,7 @@ public class UsuarioLogin {
 	private String usuario;
 	private String senha;
 	private String foto;
-	private String token;
+	private String token; //  É UM ATRIBUTO EXTRA QUE NÃO EXISTE NA CLASSE USUARIO. ELE ARMAZENA UM TOKEN DE AUTENTICAÇÃO GERADO APOS O LOGIN
 
 	public Long getId() {
 		return this.id;

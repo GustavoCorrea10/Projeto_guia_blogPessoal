@@ -17,22 +17,22 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "tb_usuarios")
+@Entity // DIZ QUE ESSA CLASSE VAI ESTAR NO BANCO DE DADOS COMO UMA TABELA
+@Table(name = "tb_usuarios") // NOME DA TABELA
 public class Usuario {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id // DIZ QUE É A CHAVE PRINCIPAL DA TABELA
+	@GeneratedValue(strategy = GenerationType.IDENTITY)// GERA O ID AUTOMATICAMENTE PARA CASA USUARIO
 	private Long id;
 
-	@NotNull(message = "O Atributo Nome é Obrigatório!")
+	@NotNull(message = "O Atributo Nome é Obrigatório!") // O CAMPO NÃ PODE ESTAR VAZIO
 	private String nome;
 
 	@NotNull(message = "O Atributo Usuário é Obrigatório!")
-	@Email(message = "O Atributo Usuário deve ser um email válido!")
+	@Email(message = "O Atributo Usuário deve ser um email válido!")// VERIFICA SE O VALOR É UM EMAIL VALIDO( TEM UM @ E GMAIL.COM)
 	private String usuario;
 
-	@NotBlank(message = "O Atributo Senha é Obrigatório!")
+	@NotBlank(message = "O Atributo Senha é Obrigatório!") // O CAMPO NÃO PODE ESTAR VAZIO OU SÓ TER ESPAÇOS EM BRANCO
 	@Size(min = 8, message = "A Senha deve ter no mínimo 8 caracteres")
 	private String senha;
 
@@ -42,8 +42,44 @@ public class Usuario {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagem;
+	
+	//ONETOMANY                       (UM USUARIO PARA MUITAS POSTAGENS)
+	//fetch = FetchType.LAZY          ( AS POSTAGENS SÓ SERÃO CARREGADAS NO BANCO QUANDO VOCÊ PEDIR)
+    //mappedBy = "usuario"            ( MOSTAR QUE NO RELACIONAMENTO, A TABELA POSTAGEM TEM UM CAMPO CHAMADO USUARIO
+    //cascade = CascadeType.REMOVE    ( SE UM USUARIO FOR EXCLUIDO, TODAS AS POSTAGENS RELACIONADAS A ELE TAMBEM SERÃO)
+	//@JsonIgnoreProperties           ("usuario") (EVITA O LOOP INFINITO AO CONOVERTER DADOS DO BANCO PARA JSON)
+	
+	
+	
+	
+	
+	
+	public Usuario(Long id, String nome, String usuario, String senha, String foto) {
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha = senha;
+		this.foto = foto;
+	}
+	
+	
+	
+	
+	public Usuario() {
+	}
 
 
+
+
+
+
+
+
+
+
+
+
+	// GETTERS E SETTERS = SERVEM PARA ACESSAR (GET) OU ALTERAR (SET)
 	public Long getId() {
 		return this.id;
 	}

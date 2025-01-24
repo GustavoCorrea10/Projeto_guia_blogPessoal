@@ -28,17 +28,28 @@ import jakarta.validation.Valid;
 public class UsuarioController {
 
 	@Autowired
-	private UsuarioService usuarioService;
+	private UsuarioService usuarioService; // RESPONSAVEL PELAS REGRAS DE NEGOCIO(EX: CADASTRO, AUTENTICAÇÃO)
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private UsuarioRepository usuarioRepository; // INTERFACE PARA ACESSAR O BANCO DE DADOS (EX: BUSCAR, SALVAR, ATUALIZAR USUARIOS.)
 	
-	@GetMapping("/all")
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping("/all") // BUSCA TODOS OS USUARIOS NO BANCO DE DADOS COM O USUARIOREPOSITORY.FINDALL()
 	public ResponseEntity <List<Usuario>> getAll(){
 		
 		return ResponseEntity.ok(usuarioRepository.findAll());
 		
 	}
+	
+	
+	
+	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Usuario> getById(@PathVariable Long id) {
@@ -47,6 +58,11 @@ public class UsuarioController {
 			.orElse(ResponseEntity.notFound().build());
 	}
 	
+	
+	
+	
+	
+	
 	@PostMapping("/logar")
 	public ResponseEntity<UsuarioLogin> autenticarUsuario(@RequestBody Optional<UsuarioLogin> usuarioLogin){
 		
@@ -54,6 +70,11 @@ public class UsuarioController {
 				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
 				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
+	
+	
+	
+	
+	
     
 
 	@PostMapping("/cadastrar")
@@ -64,6 +85,11 @@ public class UsuarioController {
 			.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
 
 	}
+	
+	
+	
+	
+	
 
 	@PutMapping("/atualizar")
 	public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
